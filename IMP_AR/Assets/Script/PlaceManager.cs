@@ -4,18 +4,22 @@ using UnityEngine;
 
 public class PlaceManager : MonoBehaviour
 {
-    private PlaceIndicator placeIndicator;
-    public GameObject ObjectToPlace;
-
-    private GameObject newPlacedObject;
+    [SerializeField] private PlaceIndicator placeIndicator;
+    [SerializeField] private GameObject ObjectToPlace;
 
     void Start()
     {
-        placeIndicator = FindObjectOfType<PlaceIndicator>();
     }
 
     public void ClickToPlace()
     {
-        newPlacedObject = Instantiate(ObjectToPlace, placeIndicator.transform.position, placeIndicator.transform.rotation);
+        if (placeIndicator.isActive())
+        {
+            placeIndicator = FindObjectOfType<PlaceIndicator>();
+            Vector3 rotation = placeIndicator.transform.rotation.eulerAngles;
+            Instantiate(ObjectToPlace, placeIndicator.transform.position, new Quaternion(0f, rotation.y, 0f, 0f));
+
+            GameManager._instance.ClickButtonPlace();
+        }
     }
 }
