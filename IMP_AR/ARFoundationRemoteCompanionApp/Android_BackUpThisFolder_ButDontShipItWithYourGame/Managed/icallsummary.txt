@@ -490,6 +490,7 @@ UnityEngine.ImageConversion::EncodeToJPG
 UnityEngine.ImageConversion::EncodeToPNG
 UnityEngine.Input::CheckDisabled
 UnityEngine.Input::GetButtonDown
+UnityEngine.Input::GetKeyDownInt
 UnityEngine.Input::GetMouseButton
 UnityEngine.Input::GetMouseButtonDown
 UnityEngine.Input::GetMouseButtonUp
@@ -526,6 +527,7 @@ UnityEngine.Light::get_color_Injected
 UnityEngine.Light::get_shadows
 UnityEngine.Light::get_type
 UnityEngine.Light::get_cookie
+UnityEngine.LineRenderer::get_positionCount
 UnityEngine.LineRenderer::get_widthMultiplier
 UnityEngine.LineRenderer::SetPosition_Injected
 UnityEngine.LineRenderer::set_positionCount
@@ -651,6 +653,7 @@ UnityEngine.ParticleSystem/MainModule::get_startColor_Injected
 UnityEngine.ParticleSystem/MainModule::get_startSize_Injected
 UnityEngine.ParticleSystemRenderer::GetMeshes
 UnityEngine.Physics::get_defaultPhysicsScene_Injected
+UnityEngine.Physics::get_gravity_Injected
 UnityEngine.Physics::Internal_RaycastAll_Injected
 UnityEngine.Physics2D::get_queriesHitTriggers
 UnityEngine.Physics2D::GetRayIntersectionAll_Internal_Injected
@@ -765,6 +768,9 @@ UnityEngine.Resources::GetBuiltinResource
 UnityEngine.ResourcesAPIInternal::Load
 UnityEngine.ResourcesAPIInternal::FindObjectsOfTypeAll
 UnityEngine.ResourcesAPIInternal::FindShaderByName
+UnityEngine.Rigidbody::get_mass
+UnityEngine.Rigidbody::AddForce_Injected
+UnityEngine.Rigidbody::set_useGravity
 UnityEngine.SceneManagement.Scene::GetNameInternal
 UnityEngine.SceneManagement.SceneManager::get_sceneCount
 UnityEngine.SceneManagement.SceneManager::GetSceneAt_Injected

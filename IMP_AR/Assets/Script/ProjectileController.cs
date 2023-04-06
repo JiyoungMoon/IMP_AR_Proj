@@ -43,13 +43,7 @@ public class ProjectileController : MonoBehaviour
     void Update()
     {   
         // when this projectile falls down near ground
-        if (transform.position.y < 0.1){
-            _isThrowProjectileRunning = false;
-            Destroy(this.gameObject);
-        }
-
-        // when the tab button clicks destroy (For test)
-        if (Input.GetKeyDown(KeyCode.Tab)){
+        if (transform.position.y < -100){
             _isThrowProjectileRunning = false;
             Destroy(this.gameObject);
         }
