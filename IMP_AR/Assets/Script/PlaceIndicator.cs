@@ -6,16 +6,15 @@ using UnityEngine.XR.ARSubsystems;
 
 public class PlaceIndicator : MonoBehaviour
 {
-
     private ARRaycastManager raycastManager;
-    private GameObject indicator;
+    private GameObject crosshair;
     private List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
     void Start()
     {
         raycastManager = FindObjectOfType<ARRaycastManager>();
-        indicator = transform.GetChild(0).gameObject;
-        indicator.SetActive(false);
+        crosshair = transform.GetChild(0).gameObject;
+        crosshair.SetActive(false);
     }
 
     void Update()
@@ -29,10 +28,15 @@ public class PlaceIndicator : MonoBehaviour
             transform.position = hitPose.position;
             transform.rotation = hitPose.rotation;
 
-            if(!indicator.activeInHierarchy)
+            if(!crosshair.activeInHierarchy)
             {
-                indicator.SetActive(true);
+                crosshair.SetActive(true);
             }
         }
+    }
+
+    public bool isActive()
+    {
+        return (crosshair != null) && (crosshair.activeInHierarchy);
     }
 }
