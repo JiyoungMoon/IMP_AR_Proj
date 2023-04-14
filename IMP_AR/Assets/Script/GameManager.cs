@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     // Game Objects
     [SerializeField] private GameObject indicator;
+    [SerializeField] private GameObject projectile;
 
     public static GameManager Instance
     {
@@ -67,6 +68,7 @@ public class GameManager : MonoBehaviour
 
     void HandleBeginShooting()
     {
+        projectile.SetActive(true);
     }
 }
 
