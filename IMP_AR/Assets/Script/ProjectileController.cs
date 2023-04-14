@@ -24,8 +24,8 @@ public class ProjectileController : MonoBehaviour
     // fields related to draw projectile's trajectory
     private LineRenderer _lineRender;
     private int _lineRenderIndex = 0;
-    [SerializeField] private int _maxNumRenderPoints = 20000;
-    private float _renderTimeGap = 1/60f;
+    [SerializeField] private int _maxNumRenderPoints = 20;
+    private float _renderTimeGap = 0.1f;
 
     // Start is called before the first frame update
     void Start()
@@ -72,7 +72,7 @@ public class ProjectileController : MonoBehaviour
         if (_isThrowProjectileRunning == true){
             
             if (_firstthrow == false){
-                _stoneRB.AddForce((Vector3.SqrMagnitude(_mouseMovement) / 100 * _camera.transform.forward * 0.01f - _camera.transform.right*_mouseMovement.x * 0.01f - _camera.transform.up*_mouseMovement.y * 0.02f)/_stoneRB.mass, ForceMode.Impulse);
+                _stoneRB.AddForce(_throwVector, ForceMode.Impulse);
                 _firstthrow = true;
                 _lineRender.enabled = false;
             }
@@ -113,7 +113,7 @@ public class ProjectileController : MonoBehaviour
         _lineRender.enabled = true;
         Vector3 startPosition = transform.position;
         
-        _throwVector = (Vector3.SqrMagnitude(_mouseMovement) / 100 * _camera.transform.forward * 0.01f - _camera.transform.right*_mouseMovement.x * 0.01f - _camera.transform.up*_mouseMovement.y * 0.02f) / _stoneRB.mass;
+        _throwVector = (Vector3.SqrMagnitude(_mouseMovement) / 300 * _camera.transform.forward * 0.01f - _camera.transform.right*_mouseMovement.x * 0.01f - _camera.transform.up*_mouseMovement.y * 0.05f) / _stoneRB.mass/2;
         
 
         _lineRender.SetPosition(_lineRenderIndex,startPosition);
