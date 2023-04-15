@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
-using Random = UnityEngine.Random;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,8 +11,7 @@ public class GameManager : MonoBehaviour
 
     // Game Objects
     [SerializeField] private GameObject indicator;
-    [SerializeField] private GameObject projectile;
-
+    
     public static GameManager Instance
     {
         get
@@ -60,6 +55,7 @@ public class GameManager : MonoBehaviour
     public void ClickButtonPlace() {
         UpdateGameStates(GameState.Shooting);
         indicator.SetActive(false);
+        
     }
     void HandleBeginPlacement()
     {
@@ -68,7 +64,7 @@ public class GameManager : MonoBehaviour
 
     void HandleBeginShooting()
     {
-        projectile.SetActive(true);
+        print("Shooting available");
     }
 }
 
