@@ -9,7 +9,9 @@ public class ProjectileController : MonoBehaviour
     private Rigidbody _stoneRB;
 
     private bool _isThrowProjectileRunning = false;
-    private bool _isMouseClick = false;
+    private bool _isTouchingProjectile = false;
+
+    private float _touchProjectileRadius = 100f;
 
 
     private Vector3 _startVector;
@@ -24,7 +26,7 @@ public class ProjectileController : MonoBehaviour
     // fields related to draw projectile's trajectory
     private LineRenderer _lineRender;
     private int _lineRenderIndex = 0;
-    [SerializeField] private int _maxNumRenderPoints = 20;
+    [SerializeField] private int _maxNumRenderPoints = 200;
     private float _renderTimeGap = 0.1f;
 
     // Start is called before the first frame update
@@ -40,6 +42,8 @@ public class ProjectileController : MonoBehaviour
     }
 
     // Update is called once per frame
+
+
     void Update()
     {   
         // when this projectile falls down near ground
@@ -50,27 +54,34 @@ public class ProjectileController : MonoBehaviour
 
         // check the mouse clicking, get the mouse position
         if (Input.GetMouseButtonDown(0)){
-            _isMouseClick = true;
-            _startVector = Input.mousePosition;
-            _finishVector = Input.mousePosition;
+            Vector3 projectileScreenPosition = _camera.WorldToScreenPoint(transform.position);
+            float touchDist = Vector3.Distance(projectileScreenPosition, Input.mousePosition);
+            // print(projectileScreenPosition + "\t" + Input.mousePosition + "\t" + touchDist);
+            if (touchDist < _touchProjectileRadius){
+                _isTouchingProjectile = true;
+                _startVector = Input.mousePosition;
+                _finishVector = Input.mousePosition;
+            }
 
         }
         if (Input.GetMouseButton(0)){
-            _finishVector = Input.mousePosition;
-
+            if (_isTouchingProjectile == true){
+                _finishVector = Input.mousePosition;
+            }
         }
         if (Input.GetMouseButtonUp(0)){
-            _isMouseClick = false;
-            _finishVector = Input.mousePosition;
-            _lineRender.enabled = false;
-            ThrowProjectile();
+            if (_isTouchingProjectile == true){
+                _isTouchingProjectile = false;
+                _finishVector = Input.mousePosition;
+                _lineRender.enabled = false;
+                ThrowProjectile();
+            }
         }
     }
     private bool _firstthrow = false;
     private void FixedUpdate() {
         // when the player unclick the mouse, it will throw projectile by adding force
         if (_isThrowProjectileRunning == true){
-            
             if (_firstthrow == false){
                 _stoneRB.AddForce(_throwVector, ForceMode.Impulse);
                 _firstthrow = true;
@@ -82,17 +93,17 @@ public class ProjectileController : MonoBehaviour
 
     private void LateUpdate() {
 
-
+        Vector3 _offsetWorld2Camera = _offset.x*_camera.transform.right + _offset.y*_camera.transform.up + _offset.z*_camera.transform.forward;
         // when the projectile is not throwing, needs to be shown in front of the camera continuously
         if (_isThrowProjectileRunning == false) {
-            if (_isMouseClick == false){
-                transform.position = _camera.transform.position - _camera.transform.up * 0.3f  + _camera.transform.forward;
+            if (_isTouchingProjectile == false){
+                transform.position = _camera.transform.position + _offsetWorld2Camera;
             }
-            if (_isMouseClick == true){
+            if (_isTouchingProjectile == true){
 
                 _mouseMovement = _finishVector - _startVector;
                 Vector3 convertedMouseMovement = _camera.transform.right*_mouseMovement.x + _camera.transform.up*_mouseMovement.y;
-                transform.position = _camera.transform.position - _camera.transform.up * 0.3f  + _camera.transform.forward + convertedMouseMovement / 700;
+                transform.position = _camera.transform.position + _offsetWorld2Camera + convertedMouseMovement / 3000;
                 drawTrajectoryLine();
                 
 
@@ -113,15 +124,15 @@ public class ProjectileController : MonoBehaviour
         _lineRender.enabled = true;
         Vector3 startPosition = transform.position;
         
-        _throwVector = (Vector3.SqrMagnitude(_mouseMovement) / 300 * _camera.transform.forward * 0.01f - _camera.transform.right*_mouseMovement.x * 0.01f - _camera.transform.up*_mouseMovement.y * 0.05f) / _stoneRB.mass/2;
+        _throwVector = (Vector3.SqrMagnitude(_mouseMovement) / 300 * _camera.transform.forward * 0.02f - _camera.transform.right*_mouseMovement.x * 0.01f - _camera.transform.up*_mouseMovement.y * 0.1f) / 3 / _stoneRB.mass;
         
 
         _lineRender.SetPosition(_lineRenderIndex,startPosition);
-        for (float j=0;_lineRenderIndex<_lineRender.positionCount;j+=_renderTimeGap) {
+        for (float j=0;_lineRenderIndex<_lineRender.positionCount-1;j+=_renderTimeGap) {
             _lineRenderIndex++;
             Vector3 linePosition = startPosition + j * _throwVector;
             linePosition.y = startPosition.y + _throwVector.y * j + 0.5f * Physics.gravity.y*j*j;
-            _lineRender.SetPosition(_lineRenderIndex, linePosition); 
+            _lineRender.SetPosition(_lineRenderIndex, linePosition);
         }
     }
 
