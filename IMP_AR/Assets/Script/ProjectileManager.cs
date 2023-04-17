@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class ProjectileManager : MonoBehaviour
 {
+    // Singleton
+    public static ProjectileManager _instance;
 
     [SerializeField] private List<GameObject> _bulletInventory;
     [SerializeField] private List<UnityEngine.UI.Button> _bulletButtonList;
@@ -16,8 +18,20 @@ public class ProjectileManager : MonoBehaviour
     private Camera _camera;
 
     private Vector3 _offset;
+    public static ProjectileManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+                Debug.LogError("Game Manager is NULL!");
+            return _instance;
+        }
+    }
 
-    // Update is called once per frame
+    void Awake()
+    {
+        _instance = this;
+    }
 
     private void Start() {
         _camera = Camera.main;
@@ -46,7 +60,7 @@ public class ProjectileManager : MonoBehaviour
         if (_selectedBullet!=null){
             Destroy(_selectedBullet.gameObject);
         }
-        // 2. then, instantiate the selected bullt
+        // 2. then, instantiate the selected bullet
         Vector3 initPosition = _camera.transform.position + _offset;
         Quaternion initRotation = _camera.transform.rotation;
         _selectedBullet = Instantiate(_bulletInventory[bulletIndex],initPosition,initRotation);

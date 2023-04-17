@@ -1,16 +1,22 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.InputSystem.LowLevel;
 
 public class GameManager : MonoBehaviour
 {
     // State management
-    public static GameManager _instance;
+    private static GameManager _instance;
     public GameState state;
     public static event Action<GameState> OnGameStateChange;
+    public static event Action<int> OnScoreChange;
 
     // Game Objects
     [SerializeField] private GameObject indicator;
+    [SerializeField] private GameObject weapon;
+
+    // Score
+    private int score = 0;
     
     public static GameManager Instance
     {
@@ -60,11 +66,20 @@ public class GameManager : MonoBehaviour
     void HandleBeginPlacement()
     {
         indicator.SetActive(true);
+        weapon.SetActive(false);
     }
 
     void HandleBeginShooting()
     {
-        print("Shooting available");
+        indicator.SetActive(false);
+        weapon.SetActive(true);
+        ProjectileManager.Instance.setBullet(0);
+    }
+
+    public void addScore(int points)
+    {
+        score += points;
+        OnScoreChange?.Invoke(score);
     }
 }
 

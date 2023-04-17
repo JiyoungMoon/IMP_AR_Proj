@@ -1,4 +1,5 @@
 #undef UNITY_EDITOR
+#undef UNITY_EDITOR
 using System;
 using UnityEngine;
 using UnityEngine.Rendering;

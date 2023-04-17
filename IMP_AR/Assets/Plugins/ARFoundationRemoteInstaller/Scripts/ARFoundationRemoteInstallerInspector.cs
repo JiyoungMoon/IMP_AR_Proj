@@ -87,7 +87,7 @@ namespace ARFoundationRemote.Editor {
                         ARFoundationRemoteInstaller.UnEmbedARFoundation();
                     }
                 } else {
-                    if (GUILayout.Button("Embed AR Foundation (optional)")) {
+                    if (GUILayout.Button("Embed AR Foundation and apply fixes")) {
                         ARFoundationRemoteInstaller.EmbedARFoundation();
                     }
                     
