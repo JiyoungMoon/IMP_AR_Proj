@@ -19,7 +19,7 @@ public class PlaceManager : MonoBehaviour
             Vector3 rotation = placeIndicator.transform.rotation.eulerAngles;
             Instantiate(ObjectToPlace, placeIndicator.transform.position, new Quaternion(0f, rotation.y, 0f, 0f));
 
-            GameManager._instance.ClickButtonPlace();
+            GameManager.Instance.ClickButtonPlace();
         }
     }
 }
