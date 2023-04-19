@@ -1,21 +1,23 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
-using Random = UnityEngine.Random;
+using System.Collections.Generic;
+using UnityEngine.InputSystem.LowLevel;
 
 public class GameManager : MonoBehaviour
 {
     // State management
-    public static GameManager _instance;
+    private static GameManager _instance;
     public GameState state;
     public static event Action<GameState> OnGameStateChange;
+    public static event Action<int> OnScoreChange;
 
     // Game Objects
     [SerializeField] private GameObject indicator;
+    [SerializeField] private GameObject weapon;
 
+    // Score
+    private int score = 0;
+    
     public static GameManager Instance
     {
         get
@@ -59,14 +61,25 @@ public class GameManager : MonoBehaviour
     public void ClickButtonPlace() {
         UpdateGameStates(GameState.Shooting);
         indicator.SetActive(false);
+        
     }
     void HandleBeginPlacement()
     {
         indicator.SetActive(true);
+        weapon.SetActive(false);
     }
 
     void HandleBeginShooting()
     {
+        indicator.SetActive(false);
+        weapon.SetActive(true);
+        ProjectileManager.Instance.setBullet(0);
+    }
+
+    public void addScore(int points)
+    {
+        score += points;
+        OnScoreChange?.Invoke(score);
     }
 }
 

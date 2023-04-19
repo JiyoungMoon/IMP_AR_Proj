@@ -1,15 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
-    // State management
-    public static MenuManager _instance;
+    // Singleton
+    private static MenuManager _instance;
 
+    // UI Elements
     [SerializeField] private Button buttonPlace;
+    [SerializeField] private TextMeshProUGUI textScore;
 
     public static MenuManager Instance
     {
@@ -27,16 +30,22 @@ public class MenuManager : MonoBehaviour
 
         // Subscribe to game manager
         GameManager.OnGameStateChange += HandleOnGameStateChanged;
+        GameManager.OnScoreChange += HandleOnScoreChanged;
     }
 
     private void OnDestroy()
     {
         GameManager.OnGameStateChange -= HandleOnGameStateChanged;
+        GameManager.OnScoreChange -= HandleOnScoreChanged;
     }
 
     void HandleOnGameStateChanged(GameState state)
     {
         showPlacementButton(state == GameState.Placement);
+    }
+    void HandleOnScoreChanged(int score)
+    {
+        textScore.text = $"Score: {score}";
     }
 
     private void showPlacementButton(bool active)
